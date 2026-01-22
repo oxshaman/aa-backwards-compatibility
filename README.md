@@ -48,6 +48,17 @@ The technique exploits a property of EVM calldata encoding: bytes appended beyon
 
 The user signs an `approve` transaction which approves some amount of some token to their Smart Account. The `approve` call appends the merkle tree root hash of all the function calls which need to happen after the funds are pulled to the smart account. Usually the last operation is returning any resulting funds back to the user EOA. The smart account uses `transferFrom` to consume the approval and execute all additional actions. 
 
+An example:
+
+User approves 3000 USDC to their Smart Account. The `approve` call has a hash which encodes the following instructions:
+
+1. `transferFrom` which pulls 3000 USDC from the user EOA to their SCA
+2. `swap` call which swaps USDC into WETH
+3. `deposit` call which deposits the WETH into a Vault
+4. `withdraw` call which pulls the vault tokens back to the user EOA
+
+This is a single-signature batch execution from a regular user EOA!
+
 ### Calldata Structure
 
 ```
