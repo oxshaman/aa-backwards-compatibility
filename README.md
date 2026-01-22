@@ -46,6 +46,8 @@ This proposal aims to:
 
 The technique exploits a property of EVM calldata encoding: bytes appended beyond the expected length of a function call are ignored by the target contract but remain accessible on-chain. This allows embedding a commitment to additional operations within a standard `approve` transaction.
 
+The user signs an `approve` transaction which approves some amount of some token to their Smart Account. The `approve` call appends the merkle tree root hash of all the function calls which need to happen after the funds are pulled to the smart account. Usually the last operation is returning any resulting funds back to the user EOA. The smart account uses `transferFrom` to consume the approval and execute all additional actions. 
+
 ### Calldata Structure
 
 ```
